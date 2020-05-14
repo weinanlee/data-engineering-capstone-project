@@ -72,6 +72,20 @@ class ExtractionFromSASOperator(BaseOperator):
         sas_dict['i94cit_i94res']['df'] = pd.DataFrame(
             sas_dict['i94cit_i94res']['data'], 
             columns=['code', 'country'])
+
+        tempdf = pd.DataFrame(sas_dict['i94port']['data'],columns=['code', 'port_of_entry'])
+        tempdf['code'] = tempdf['code'].str.upper()
+        tempdf[['city', 'state_or_country']] = tempdf['port_of_entry'].str.rsplit(',', 1, expand=True)
+    
+        sas_dict['i94port']['df'] = tempdf
+
+        sas_dict['i94mode']['df'] = pd.DataFrame(sas_dict['i94mode']['data'], columns=['code', 'transportation'])
+
+        tempdf = pd.DataFrame(sas_dict['i94addr']['data'],columns=['code', 'state'])
+        tempdf['code'] = tempdf['code'].str.upper()
+        sas_dict['i94addr']['df'] = tempdf
+
+        sas_dict['i94visa']['df'] = pd.DataFrame(sas_dict['i94visa']['data'], columns=['code', 'reason_for_travel'])      
         
         # Write every extracted table into s3 bucket
         for table in sas_dict.keys():
