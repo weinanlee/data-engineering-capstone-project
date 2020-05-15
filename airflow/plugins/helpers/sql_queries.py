@@ -1,7 +1,10 @@
 class SqlQueries:
-	immigrant_table_create = """
-	CREATE TABLE IF NOT EXISTS public.immigration (
-		cicid FLOAT PRIMARY KEY,
+    table_name = ['immigration', 'i94cit_i94res', 'i94mode','i94addr','i94visa']
+    drop_table = """
+    DROP TABLE IF EXISTS {};
+    """
+    immigrant_table_create = """CREATE TABLE IF NOT EXISTS public.immigration (
+        cicid FLOAT PRIMARY KEY,
         i94yr FLOAT,
         i94mon FLOAT,
         i94cit FLOAT,
@@ -30,10 +33,14 @@ class SqlQueries:
         fltno VARCHAR,
         visatype VARCHAR
         );
-	"""
- #    ## I94CIT & I94RES - This format shows all the valid and invalid codes for processing 
-	# i94cit_i94res_table_create = """
-	# """
+    """
+    ## I94CIT & I94RES - This format shows all the valid and invalid codes for processing 
+    i94cit_i94res_table_create = """
+    CREATE TABLE IF NOT EXISTS public.i94cit_i94res (
+        code SMALLINT PRIMARY KEY,
+        country VARCHAR
+        );
+    """
     
  #    port_of_entry_codes_table_create = """
  #    """
@@ -42,17 +49,29 @@ class SqlQueries:
  #    i94port_table_create = """
  #    """
 
- #    ## I94MODE - There are missing values as well as not reported (9)
- #    i94mode_table_create = """
- #    """
+    ## I94MODE - There are missing values as well as not reported (9)
+    i94mode_table_create = """
+    CREATE TABLE IF NOT EXISTS public.i94mode (
+        code SMALLINT PRIMARY KEY,
+        transportation VARCHAR
+        );
+    """
 
- #    ## I94ADDR - There is lots of invalid codes in this variable and the list below 
- #    ## shows what we have found to be valid, everything else goes into 'other'
- #    i94addr_table_create = """
- #    """
- #    ## I94VISA - Visa codes collapsed into three categories:
- #    ## 1 = Business
- #    ## 2 = Pleasure
- #    ## 3 = Student
- #    i94visa_table_create = """
- #    """
+    ## I94ADDR - There is lots of invalid codes in this variable and the list below 
+    ## shows what we have found to be valid, everything else goes into 'other'
+    i94addr_table_create = """
+    CREATE TABLE IF NOT EXISTS public.i94addr (
+        code VARCHAR PRIMARY KEY,
+        state VARCHAR
+        );
+    """
+    ## I94VISA - Visa codes collapsed into three categories:
+    ## 1 = Business
+    ## 2 = Pleasure
+    ## 3 = Student
+    i94visa_table_create = """
+    CREATE TABLE IF NOT EXISTS public.i94visa (
+        code SMALLINT PRIMARY KEY,
+        reason_for_travel VARCHAR
+        );
+    """

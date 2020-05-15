@@ -9,7 +9,8 @@ import helpers
 class UdacityPlugin(AirflowPlugin):
     name = "udacity_plugin"
     operators = [
-        operators.ExtractionFromSASOperator
+        operators.ExtractionFromSASOperator,
+        operators.CreateTableOperator
     ]
     helpers = [
         helpers.SqlQueries

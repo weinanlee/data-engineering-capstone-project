@@ -68,23 +68,26 @@ class ExtractionFromSASOperator(BaseOperator):
                 sas_dict[key]['data'] = temp_data
                 temp_data = []
         
-      
+        # Get i94cit_i94res
         sas_dict['i94cit_i94res']['df'] = pd.DataFrame(
             sas_dict['i94cit_i94res']['data'], 
             columns=['code', 'country'])
-
+        
+        # Get i94port
         tempdf = pd.DataFrame(sas_dict['i94port']['data'],columns=['code', 'port_of_entry'])
         tempdf['code'] = tempdf['code'].str.upper()
         tempdf[['city', 'state_or_country']] = tempdf['port_of_entry'].str.rsplit(',', 1, expand=True)
-    
         sas_dict['i94port']['df'] = tempdf
-
+        
+        # Get i94mode
         sas_dict['i94mode']['df'] = pd.DataFrame(sas_dict['i94mode']['data'], columns=['code', 'transportation'])
-
+        
+        # Get i94addr
         tempdf = pd.DataFrame(sas_dict['i94addr']['data'],columns=['code', 'state'])
         tempdf['code'] = tempdf['code'].str.upper()
         sas_dict['i94addr']['df'] = tempdf
-
+        
+        # Get i94visa
         sas_dict['i94visa']['df'] = pd.DataFrame(sas_dict['i94visa']['data'], columns=['code', 'reason_for_travel'])      
         
         # Write every extracted table into s3 bucket
@@ -95,3 +98,4 @@ class ExtractionFromSASOperator(BaseOperator):
                 self.log.info(save_file)
                 with s3.open(save_file, "w") as f:
                     sas_dict[table]['df'].to_csv(f, index=False)
+                    self.log.info(f"Writing {table} successfully into S3 bucket!")
