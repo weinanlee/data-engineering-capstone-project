@@ -1,5 +1,41 @@
 class SqlQueries:
-    table_name = ['immigration', 'i94cit_i94res', 'i94mode','i94addr','i94visa']
+    table_name = ['staging_immigration','immigration', 'i94cit_i94res', 'i94mode','i94addr','i94visa','i94port']
+
+
+    staging_immigrant_table_create = """
+    CREATE TABLE IF NOT EXISTS public.staging_immigration (
+        Unnamed       INT,
+        cicid         FLOAT,
+        i94yr         FLOAT,
+        i94mon        FLOAT,
+        i94cit        FLOAT,
+        i94res        FLOAT,
+        i94port       VARCHAR,
+        arrdate       FLOAT,
+        i94mode       FLOAT,
+        i94addr       VARCHAR,
+        depdate       FLOAT,
+        i94bir        FLOAT,
+        i94visa       FLOAT,
+        count         FLOAT,
+        dtadfile      INT,
+        visapost      VARCHAR,
+        occup         VARCHAR,
+        entdepa       VARCHAR,
+        entdepd       VARCHAR,
+        entdepu       FLOAT,
+        matflag       VARCHAR,
+        biryear       FLOAT,
+        dtaddto       VARCHAR,
+        gender        VARCHAR,
+        insnum        FLOAT,
+        airline       VARCHAR,
+        admnum        FLOAT,
+        fltno         VARCHAR,
+        visatype      VARCHAR)
+    
+    """
+
     drop_table = """
     DROP TABLE IF EXISTS {};
     """
@@ -45,9 +81,15 @@ class SqlQueries:
  #    port_of_entry_codes_table_create = """
  #    """
 
- #    ## /* I94PORT - This format shows all the valid and invalid codes for processing */
- #    i94port_table_create = """
- #    """
+    ## /* I94PORT - This format shows all the valid and invalid codes for processing */
+    i94port_table_create = """
+    CREATE TABLE IF NOT EXISTS public.i94port (
+            code VARCHAR PRIMARY KEY,
+            port_of_entry VARCHAR,
+            city VARCHAR,
+            state_or_country VARCHAR
+        );
+    """
 
     ## I94MODE - There are missing values as well as not reported (9)
     i94mode_table_create = """

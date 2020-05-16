@@ -10,7 +10,8 @@ class UdacityPlugin(AirflowPlugin):
     name = "udacity_plugin"
     operators = [
         operators.ExtractionFromSASOperator,
-        operators.CreateTableOperator
+        operators.CreateTableOperator,
+        operators.CopyTableOperator
     ]
     helpers = [
         helpers.SqlQueries
