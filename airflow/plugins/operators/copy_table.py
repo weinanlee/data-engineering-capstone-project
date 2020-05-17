@@ -14,6 +14,7 @@ class CopyTableOperator(BaseOperator):
                  s3_bucket = '',
                  s3_load_prefix = '',
                  csv_file_name = '',
+                 delimiter = ',',
                  aws_conn_id = 'aws_credentials',
                  redshift_conn_id = 'redshift',
                  *args, **kwargs):
@@ -24,6 +25,7 @@ class CopyTableOperator(BaseOperator):
         self.s3_bucket = s3_bucket
         self.s3_load_prefix = s3_load_prefix
         self.csv_file_name = csv_file_name
+        self.delimiter = delimiter
         self.aws_conn_id = aws_conn_id
         self.redshift_conn_id = redshift_conn_id
 
@@ -44,10 +46,10 @@ class CopyTableOperator(BaseOperator):
         COPY {}.{}
         FROM 's3://{}/{}/{}'
         CREDENTIALS 'aws_access_key_id={};aws_secret_access_key={}'
-        COMPUPDATE OFF
         IGNOREHEADER 1
-        TRUNCATECOLUMNS
-        CSV;
+        CSV
+        DELIMITER '{}'
+        ;
         """
         copy_sql = copy.format(self.schema,
                                self.table,
@@ -55,7 +57,8 @@ class CopyTableOperator(BaseOperator):
                                self.s3_load_prefix, 
                                self.csv_file_name,
                                credentials.access_key,
-                               credentials.secret_key)
+                               credentials.secret_key,
+                               self.delimiter)
 
         self.log.info("Copy table {}.".format(self.table))
         redshift_hook.run(copy_sql)

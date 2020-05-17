@@ -11,7 +11,8 @@ class UdacityPlugin(AirflowPlugin):
     operators = [
         operators.ExtractionFromSASOperator,
         operators.CreateTableOperator,
-        operators.CopyTableOperator
+        operators.CopyTableOperator,
+        operators.CheckQualityOperator
     ]
     helpers = [
         helpers.SqlQueries
