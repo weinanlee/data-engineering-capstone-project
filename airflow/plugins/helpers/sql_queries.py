@@ -85,6 +85,15 @@ class SqlQueries:
     coordinates      VARCHAR
     )
     """
+    
+    # Clean airports dataset filtering only US airports with iata code
+    # discarting anything else that is not an airport.
+    clean_airport_table = """
+    DELETE FROM public.airport
+    WHERE iata_code ='' OR 
+          iso_country != 'US' OR 
+          type not in('large_airport', 'medium_airport', 'small_airport')
+    """
 
     ## I94CIT & I94RES - This format shows all the valid and invalid codes for processing 
     i94cit_i94res_table_create = """

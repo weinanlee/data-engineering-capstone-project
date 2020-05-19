@@ -13,10 +13,11 @@ class CopyTableOperator(BaseOperator):
                  schema ='public',
                  s3_bucket = '',
                  s3_load_prefix = '',
-                 csv_file_name = '',
+                 csv_file_name = None,
                  delimiter = ',',
                  aws_conn_id = 'aws_credentials',
                  redshift_conn_id = 'redshift',
+                 iam_role = '',
                  *args, **kwargs):
 
         super(CopyTableOperator, self).__init__(*args, **kwargs)
@@ -28,6 +29,7 @@ class CopyTableOperator(BaseOperator):
         self.delimiter = delimiter
         self.aws_conn_id = aws_conn_id
         self.redshift_conn_id = redshift_conn_id
+        self.iam_role = iam_role
 
 
     def execute(self, context):
@@ -42,7 +44,7 @@ class CopyTableOperator(BaseOperator):
 
 
 
-        copy = """
+        copy_csv = """
         COPY {}.{}
         FROM 's3://{}/{}/{}'
         CREDENTIALS 'aws_access_key_id={};aws_secret_access_key={}'
@@ -51,7 +53,20 @@ class CopyTableOperator(BaseOperator):
         DELIMITER '{}'
         ;
         """
-        copy_sql = copy.format(self.schema,
+        copy_parquet = """
+        COPY {}.{}
+        FROM 's3://{}/{}/'
+        IAM_ROLE '{}'
+        FORMAT AS PARQUET;
+        """
+
+        copy_parquet_sql = copy_parquet.format(self.schema,
+                                               self.table,
+                                               self.s3_bucket,
+                                               self.s3_load_prefix,
+                                               self.iam_role)
+
+        copy_csv_sql = copy_csv.format(self.schema,
                                self.table,
                                self.s3_bucket, 
                                self.s3_load_prefix, 
@@ -61,5 +76,8 @@ class CopyTableOperator(BaseOperator):
                                self.delimiter)
 
         self.log.info("Copy table {}.".format(self.table))
-        redshift_hook.run(copy_sql)
+        if self.csv_file_name: 
+            redshift_hook.run(copy_csv_sql)
+        else: 
+            redshift_hook.run(copy_parquet_sql)
         self.log.info("Finished copy table {}.".format(self.table))

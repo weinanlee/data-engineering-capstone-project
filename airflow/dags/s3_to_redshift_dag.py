@@ -1,10 +1,11 @@
 from airflow.operators.dummy_operator import DummyOperator
 from airflow import DAG
 from datetime import datetime, timedelta
-
+from airflow.models import Variable
 
 from airflow.operators import (ExtractionFromSASOperator, CreateTableOperator, CopyTableOperator, CheckQualityOperator, InsertTableOperator)
 from helpers import SqlQueries
+from airflow.operators.postgres_operator import PostgresOperator
 
 
 default_args = {
@@ -26,7 +27,7 @@ extract_sas_data_operator = ExtractionFromSASOperator(
 	task_id ='Extract_data_from_SAS_save_as_csv_in_s3bucket',
 	dag=dag,
 	s3_bucket = 'uda-capstone-data',
-  s3_load_prefix = 'sas_data',
+  s3_load_prefix = 'csv_data',
   s3_save_prefix = 'csv_data',
   file_name = 'I94_SAS_Labels_Descriptions.SAS')
 
@@ -46,8 +47,8 @@ load_immigration_table = CopyTableOperator(
   table = 'immigration',
   schema ='public',
   s3_bucket = 'uda-capstone-data',
-  s3_load_prefix = 'csv_data',
-  csv_file_name = 'immigration_data_sample.csv',
+  s3_load_prefix = 'sas_data',
+  iam_role = Variable.get("IAM_ROLE")
   )
 
 data_quality_check_on_immigration = CheckQualityOperator(
@@ -264,6 +265,12 @@ load_airport_table = CopyTableOperator(
   s3_load_prefix = 'csv_data',
   csv_file_name = 'airport-codes_csv.csv'
   )
+clean_airport_table = PostgresOperator(
+  task_id = 'Clean_airport_table',
+  dag=dag,
+  postgres_conn_id='redshift',
+  sql=SqlQueries.clean_airport_table
+)
 
 data_quality_check_on_airport= CheckQualityOperator(
         task_id="Check_data_quality_on_airport",
@@ -313,7 +320,10 @@ load_i94cit_i94res_table >> data_quality_check_on_i94cit_i94res
 load_i94mode_table >> data_quality_check_on_i94mode
 load_i94addr_table >> data_quality_check_on_i94addr
 load_i94visa_table >> data_quality_check_on_i94visa
-load_i94port_table >> data_quality_check_on_i94port
+
+load_i94port_table >>  clean_airport_table   
+clean_airport_table >> data_quality_check_on_i94port
+
 load_us_cities_demographics_table >> data_quality_check_on_us_cities_demographics
 load_airport_table >> data_quality_check_on_airport
 load_us_state_race_table >> data_quality_check_on_us_state_race
