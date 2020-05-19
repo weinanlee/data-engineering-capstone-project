@@ -16,19 +16,22 @@ After extracting various immigration codes from the  `I94_SAS_Labels_Description
 <img src="./images/schema.png"/>
 
 ## **Data Dictionary Dimension Tables**
-### Airports Data
- * ident: string (nullable = true) - Airport id
- * type: string (nullable = true) - size of airport
- * name: string (nullable = true) - name
- * elevation_ft: float (nullable = true) - elevation in feet
- * continent: string (nullable = true) - continet
- * iso_country: string (nullable = true) - country (ISO-2)
- * iso_region: string (nullable = true) - region (ISO-2)
- * municipality: string (nullable = true) - municipality
- * gps_code: string (nullable = true) - gps code
- * iata_code: string (nullable = true) - IATA code
- * local_code: string (nullable = true) - Local code
- * coordinates: string (nullable = true) - coordinates
+### airport_codes (Airports Data)
+
+| Attribute      | Type    | Description     |
+| ---------- | :-----------:  | :-----------: |
+| ident | VARCHAR | Airport id
+| type | VARCHAR | Size of airport
+| name | VARCHAR | name
+| elevation_ft | float | Elevation in feet
+| continent | VARCHAR  | Continet
+| iso_country |  VARCHAR  | Country (ISO-2)
+| iso_region | VARCHAR | region (ISO-2)
+| municipality | VARCHAR | Municipality
+| gps_code | VARCHAR | GPS code
+| iata_code | VARCHAR | IATA code
+| local_code | VARCHAR | Local code
+| coordinates | VARCHAR  |  Coordinates
  
  ### U.S. Demographic by State
  * State: string (nullable = true)-Full state name
@@ -66,7 +69,7 @@ After extracting various immigration codes from the  `I94_SAS_Labels_Description
 ## Fact Table (Immigration Registry)
 | Attribute      | Type    | Description     |
 | ---------- | :-----------:  | :-----------: |
-| cicid FLOAT | CIC id | 
+| cicid | FLOAT | CIC id | 
 | i94yr | FLOAT | 4 digit year  |
 | i94mon |FLOAT | Numeric month | 
 | i94cit| FLOAT | City |
