@@ -52,21 +52,72 @@ After extracting various immigration codes from the  `I94_SAS_Labels_Description
  * Hispanic_or_Latino_Ratio: double (nullable = true) - Hispanic or Latino population ratio per state 
  * White_Ratio: double (nullable = true) - White population ratio per state 
  
-## Countries
- * cod_country: long (nullable = true) - Country code
- * country_name: string (nullable = true) - Country name
+
  
+ ### i94cit_i94res (Countries)
 
-## Visas
- * cod_visa: string (nullable = true) - visa code
- * visa: string (nullable = true) - visa description
+ | Attribute      | Type    | Description     |
+ | ---------- | :-----------:  | :-----------: |
+ | code | VARCHAR  | Country code
+ | reason_for_travel |  VARCHAR | Country
  
-## Mode to access
- * cod_mode: integer (nullable = true) - Mode code
- * mode_name: string (nullable = true) - Mode description
+ 
+ ### i94port (Entry Airport )
 
+ | Attribute      | Type    | Description     |
+ | ---------- | :-----------:  | :-----------: |
+ | code | VARCHAR | Entry airport code
+ | port_of_entry | VARCHAR | Airport city and state
+ | city | VARCHAR | Airport city
+ |  state_or_country | VARCHAR | Airport state or country
+ 
+ ### i94addr (Entry State)
 
-## Fact Table (Immigration Registry)
+ | Attribute      | Type    | Description     |
+ | ---------- | :-----------:  | :-----------: |
+ |code | VARCHAR  | State code
+ | state |  VARCHAR | State
+ 
+ ### i94visa (Visa)
+
+ | Attribute      | Type    | Description     |
+ | ---------- | :-----------:  | :-----------: |
+ |code | VARCHAR  | Visa code
+ | reason_for_travel |  VARCHAR | Visa description
+ 
+### i94mode (Mode to access)
+
+| Attribute      | Type    | Description     |
+| ---------- | :-----------:  | :-----------: |
+|code | VARCHAR  | Transportation code
+| transportation |  VARCHAR | Transportation description
+
+### us_state_race (Race of US state)
+
+| Attribute      | Type    | Description     |
+| ---------- | :-----------:  | :-----------: |
+| state_code | VARCHAR | State Code
+| state | VARCHAR | State
+| race | VARCHAR | Race type
+| race_ratio | FLOAT | Race percent
+
+### us_cities (U.S. Demographicy by city)
+| Attribute      | Type    | Description     |
+| ---------- | :-----------:  | :-----------: |
+| city         |               VARCHAR | City
+| state        |              VARCHAR | State
+| median_age |                FLOAT | Median of age
+| male_population |            FLOAT | Number of male population
+| female_Population |          FLOAT | Number of female population
+| total_Population     |      FLOAT | Number of total population
+| number_veterans    |        FLOAT | Number of veterans
+| foreign_born     |          FLOAT | Number of foreign born 
+| average_household_size |    FLOAT | Average household size
+|state_code         |        VARCHAR | State Code
+
+## Fact Table 
+### immigration (Immigration Registry)
+
 | Attribute      | Type    | Description     |
 | ---------- | :-----------:  | :-----------: |
 | cicid | FLOAT | CIC id | 
