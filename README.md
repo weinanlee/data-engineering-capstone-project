@@ -64,34 +64,36 @@ After extracting various immigration codes from the  `I94_SAS_Labels_Description
 
 
 ## Fact Table (Immigration Registry)
-- cicid FLOAT - CIC id
-- i94yr FLOAT -
-- i94mon FLOAT,
-- i94cit FLOAT,
-- i94res FLOAT,
--  i94port VARCHAR,
- - arrdate FLOAT,
- - i94mode FLOAT,
- - i94addr VARCHAR,
--  depdate FLOAT,
--  i94bir FLOAT,
--  i94visa FLOAT,
--  count FLOAT,
--  dtadfile VARCHAR,
--  visapost VARCHAR,
--  occup VARCHAR,
- - entdepa VARCHAR,
- - entdepd VARCHAR,
- - entdepu VARCHAR,
--  matflag VARCHAR,
--  biryear FLOAT,
--  dtaddto VARCHAR,
-- gender VARCHAR,
-- insnum VARCHAR,
- - airline VARCHAR,
- - admnum FLOAT,
- - fltno VARCHAR - 
- - visatype VARCHAR - Class of admission legally admitting the non-immigrant to temporarily stay in U.S. 
+| Attribute      | Type    | Description     |
+| ---------- | :-----------:  | :-----------: |
+| cicid FLOAT | CIC id | 
+| i94yr | FLOAT | 4 digit year  |
+| i94mon |FLOAT | Numeric month | 
+| i94cit| FLOAT | City |
+| i94res | FLOAT | Country code |
+|  i94port | VARCHAR | Airport code |
+| arrdate  | FLOAT | Arrival Date in the USA |
+| i94mode  | FLOAT | Mode to access |
+ | i94addr  |VARCHAR | State code |
+|  depdate | FLOAT | Departure Date from the USA |
+|  i94bir  | FLOAT | Age |
+|  i94visa | FLOAT | Vias code |
+|  count  | FLOAT | Used for summary statistics |
+|  dtadfile | VARCHAR |  Character Date Field - Date added to I-94 Files | 
+|  visapost | VARCHAR | Department of State where where Visa was issued |
+|  occup | VARCHAR |  Occupation that will be performed in U.S. |
+| entdepa | VARCHAR | Arrival Flag - admitted or paroled into the U.S.|
+ | entdepd | VARCHAR | Departure Flag - Departed, lost I-94 or is deceased 
+ | entdepu  | VARCHAR | Update Flag - Either apprehended, overstayed, adjusted to perm residence |
+|  matflag  | VARCHAR | Match flag - Match of arrival and departure records |
+|  biryear | FLOAT | 4 digit year of birth |
+|  dtaddto | VARCHAR | Date to which admitted to U.S. |
+| gender | VARCHAR | Non-immigrant sex |
+| insnum | VARCHAR | INS number |
+ | airline | VARCHAR | Airline used to arrive in U.S. | 
+ | admnum | FLOAT | Admission Number |
+ | fltno | VARCHAR | Flight number of Airline used to arrive in U.S. |
+ | visatype | VARCHAR  | Class of admission legally admitting the non-immigrant to temporarily stay in U.S. |
  
  
  * arrival_day: integer (nullable = true) - arrival day of month
