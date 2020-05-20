@@ -1,7 +1,7 @@
 # Data Engineering Capstone Project
 
 ## Scope of Works
-The purpose of this project is to demonstrate various skills associated with data engineering projects. In particular, developing ETL pipelines using Airflow, constructing data warehouses through Redshift databases and S3 data storage as well as defining efficient data models e.g. star schema. As an example I will perform pipeline of US immigration, primarily focusing on the type of visas being issued and the profiles associated. The scope of this project is limited to the data sources listed below with data being aggregated across numerous dimensions such as visatype, gender, port_of_entry, nationality and month.
+The purpose of this project is to demonstrate various skills associated with data engineering projects. In particular, developing ETL pipelines using Airflow, constructing data warehouses through Redshift databases and S3 data storage as well as defining efficient data models e.g. star schema. As an example I will perform pipeline of US immigration, primarily focusing on the type of visas being issued and the profiles associated. The scope of this project is limited to the data sources listed below with data being aggregated across numerous dimensions.
 
 Further details and analysis can be found [here](./capstone_notebook.ipynb)
 
@@ -15,8 +15,12 @@ Further details and analysis can be found [here](./capstone_notebook.ipynb)
 After extracting various immigration codes from the  `I94_SAS_Labels_Descriptions.SAS` file, I was able to define a star schema by extracting the immigration fact table and various dimension tables as shown below:
 <img src="./images/schema.png"/>
 
-## **Data Dictionary Dimension Tables**
-### airport_codes (Airports Data)
+## Data Model
+
+
+### **Data Dictionary Dimension Tables**
+
+#### airport_codes (Airports Data)
 
 | Attribute      | Type    | Description     |
 | ---------- | :-----------:  | :-----------: |
@@ -33,28 +37,7 @@ After extracting various immigration codes from the  `I94_SAS_Labels_Description
 | local_code | VARCHAR | Local code
 | coordinates | VARCHAR  |  Coordinates
  
- ### U.S. Demographic by State
- * State: string (nullable = true)-Full state name
- * state_code: string (nullable = true)- State code
- * Total_Population: double (nullable = true) - Total population of the state
- * Male_Population: double (nullable = true)- Total Male population per state
- * Female_Population: double (nullable = true)- Total Female population per state
- * American_Indian_and_Alaska_Native: long (nullable = true) - Total American Indian and Alaska Native population per state
- * Asian: long (nullable = true) - Total Asian population per state
- * Black_or_African-American: long (nullable = true) - Total Black or African-American population per state
- * Hispanic_or_Latino: long (nullable = true) - Total Hispanic or Latino population per state 
- * White: long (nullable = true) - Total White population per state 
- * Male_Population_Ratio: double (nullable = true) - Male population ratio per state
- * Female_Population_Ratio: double (nullable = true) - Female population ratio per state
- * American_Indian_and_Alaska_Native_Ratio: double (nullable = true) - Black or African-American population ratio per state
- * Asian_Ratio: double (nullable = true) - Asian population ratio per state
- * Black_or_African-American_Ratio: double (nullable = true) - Black or African-American population ratio per state
- * Hispanic_or_Latino_Ratio: double (nullable = true) - Hispanic or Latino population ratio per state 
- * White_Ratio: double (nullable = true) - White population ratio per state 
- 
-
- 
- ### i94cit_i94res (Countries)
+ #### i94cit_i94res (Countries)
 
  | Attribute      | Type    | Description     |
  | ---------- | :-----------:  | :-----------: |
@@ -62,7 +45,7 @@ After extracting various immigration codes from the  `I94_SAS_Labels_Description
  | reason_for_travel |  VARCHAR | Country
  
  
- ### i94port (Entry Airport )
+ #### i94port (Entry Airport )
 
  | Attribute      | Type    | Description     |
  | ---------- | :-----------:  | :-----------: |
@@ -71,28 +54,28 @@ After extracting various immigration codes from the  `I94_SAS_Labels_Description
  | city | VARCHAR | Airport city
  |  state_or_country | VARCHAR | Airport state or country
  
- ### i94addr (Entry State)
+ #### i94addr (Entry State)
 
  | Attribute      | Type    | Description     |
  | ---------- | :-----------:  | :-----------: |
  |code | VARCHAR  | State code
  | state |  VARCHAR | State
  
- ### i94visa (Visa)
+ #### i94visa (Visa)
 
  | Attribute      | Type    | Description     |
  | ---------- | :-----------:  | :-----------: |
  |code | VARCHAR  | Visa code
  | reason_for_travel |  VARCHAR | Visa description
  
-### i94mode (Mode to access)
+ #### i94mode (Mode to access)
 
 | Attribute      | Type    | Description     |
 | ---------- | :-----------:  | :-----------: |
 |code | VARCHAR  | Transportation code
 | transportation |  VARCHAR | Transportation description
 
-### us_state_race (Race of US state)
+#### us_state_race (Race of US state)
 
 | Attribute      | Type    | Description     |
 | ---------- | :-----------:  | :-----------: |
@@ -101,7 +84,7 @@ After extracting various immigration codes from the  `I94_SAS_Labels_Description
 | race | VARCHAR | Race type
 | race_ratio | FLOAT | Race percent
 
-### us_cities (U.S. Demographicy by city)
+#### us_cities (U.S. Demographicy by city)
 | Attribute      | Type    | Description     |
 | ---------- | :-----------:  | :-----------: |
 | city         |               VARCHAR | City
@@ -115,8 +98,8 @@ After extracting various immigration codes from the  `I94_SAS_Labels_Description
 | average_household_size |    FLOAT | Average household size
 |state_code         |        VARCHAR | State Code
 
-## Fact Table 
-### immigration (Immigration Registry)
+### Fact Table 
+#### immigration (Immigration Registry)
 
 | Attribute      | Type    | Description     |
 | ---------- | :-----------:  | :-----------: |
@@ -128,7 +111,7 @@ After extracting various immigration codes from the  `I94_SAS_Labels_Description
 |  i94port | VARCHAR | Airport code |
 | arrdate  | FLOAT | Arrival Date in the USA |
 | i94mode  | FLOAT | Mode to access |
- | i94addr  |VARCHAR | State code |
+| i94addr  |VARCHAR | State code |
 |  depdate | FLOAT | Departure Date from the USA |
 |  i94bir  | FLOAT | Age |
 |  i94visa | FLOAT | Vias code |
@@ -137,29 +120,27 @@ After extracting various immigration codes from the  `I94_SAS_Labels_Description
 |  visapost | VARCHAR | Department of State where where Visa was issued |
 |  occup | VARCHAR |  Occupation that will be performed in U.S. |
 | entdepa | VARCHAR | Arrival Flag - admitted or paroled into the U.S.|
- | entdepd | VARCHAR | Departure Flag - Departed, lost I-94 or is deceased 
- | entdepu  | VARCHAR | Update Flag - Either apprehended, overstayed, adjusted to perm residence |
+| entdepd | VARCHAR | Departure Flag - Departed, lost I-94 or is deceased 
+| entdepu  | VARCHAR | Update Flag - Either apprehended, overstayed, adjusted to perm residence |
 |  matflag  | VARCHAR | Match flag - Match of arrival and departure records |
 |  biryear | FLOAT | 4 digit year of birth |
 |  dtaddto | VARCHAR | Date to which admitted to U.S. |
 | gender | VARCHAR | Non-immigrant sex |
 | insnum | VARCHAR | INS number |
- | airline | VARCHAR | Airline used to arrive in U.S. | 
- | admnum | FLOAT | Admission Number |
- | fltno | VARCHAR | Flight number of Airline used to arrive in U.S. |
- | visatype | VARCHAR  | Class of admission legally admitting the non-immigrant to temporarily stay in U.S. |
+| airline | VARCHAR | Airline used to arrive in U.S. | 
+| admnum | FLOAT | Admission Number |
+| fltno | VARCHAR | Flight number of Airline used to arrive in U.S. |
+| visatype | VARCHAR  | Class of admission legally admitting the non-immigrant to temporarily stay in U.S. |
  
- 
- * arrival_day: integer (nullable = true) - arrival day of month
 
 ## Data Storage
-<p align="center"><img src="./images/redshift.png" style="height: 100%; width: 100%; max-width: 200px" /></p>
+
 Data was stored in S3 buckets in a collection of CSV and PARQUET files. The immigration dataset extends to several million rows and thus this dataset was converted to PARQUET files to allow for easy data manipulation and processing through Dask and the ability to write to Redshift.<br><br>
 <p align="center"><img src="./images/dask.png" style="height: 100%; width: 100%; max-width: 200px" /></p>
 Dask is an extremely powerful and flexible library to handle parallel computing for dataframes in Python. Through this library, I was able to scale pandas and numpy workflows with minimal overhead. Whilst PySpark is a great API to Spark and tool to handle big data, I also highly recommend Dask, which you can read more about [here](https://dask.org/).
 
 ## ETL Pipeline
-<p align="center"><img src="./images/airflow.png" style="height: 100%; width: 100%; max-width: 200px" /></p>
+![image](./images/etl_process.png)
 Defining the data model and creating the star schema involves various steps, made significantly easier through the use of Airflow. The process of extracting files from S3 buckets, transforming the data and then writing CSV and PARQUET files to Redshift is accomplished through various tasks highlighted below in the ETL Dag graph. These steps include:
 - Extracting data from SAS Documents and writing as CSV files to S3 immigration bucket
 - Extracting remaining CSV and PARQUET files from S3 immigration bucket
