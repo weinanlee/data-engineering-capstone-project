@@ -138,13 +138,14 @@ Data was stored in S3 buckets in a collection of CSV and PARQUET files. The immi
 
 
 ## ETL Pipeline
-![image](./images/etl_process.png)
+
 Defining the data model and creating the star schema involves various steps, made significantly easier through the use of Airflow. The process of extracting files from S3 buckets, transforming the data and then writing CSV and PARQUET files to Redshift is accomplished through various tasks highlighted below in the ETL Dag graph. These steps include:
 - Extracting data from SAS Documents and writing as CSV files to S3 immigration bucket
 - Extracting remaining CSV and PARQUET files from S3 immigration bucket
 - Writing CSV and PARQUET files from S3 to Redshift
 - Performing data quality checks on the newly created tables
-<img src="./images/dag_graph.png"/>
+
+![image](./images/etl_process.png)
 
 ## Conclusion
 Overall this project was a small undertaking to demonstrate the steps involved in developing a data warehouse that is easily scalable. Skills include:
